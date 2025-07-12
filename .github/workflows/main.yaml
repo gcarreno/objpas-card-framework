@@ -87,22 +87,22 @@ jobs:
     - name: Run the tests
       run: bin/testframework_cli --all --format=plain
 
-  # release:
-  #   if: contains(github.ref_type, 'tag')
+  release:
+    if: contains(github.ref_type, 'tag')
 
-  #   name: Create GitHub Release
-  #   runs-on: ubuntu-latest
-  #   needs: [ build, test ]
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    needs: [ test ]
 
-  #   steps:
-  #   - name: Checkout
-  #     uses: actions/checkout@v4
-  #     with:
-  #       fetch-depth: 0
-  #       submodules: true
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        submodules: true
 
-  #   - name: Set env
-  #     run: echo "tag=${{ github.ref_name }}" >> "$GITHUB_ENV"
+    - name: Set env
+      run: echo "tag=${{ github.ref_name }}" >> "$GITHUB_ENV"
 
   #   - name: Download Ubuntu
   #     uses: actions/download-artifact@v4
@@ -147,21 +147,17 @@ jobs:
   #       cp -r ../locale Demo.app/Contents/MacOS
   #       tar -zcvf demo-${{ env.tag }}-x86_64-darwin.tar.gz Demo.app
 
-  #   - name: Generate Release Notes
-  #     id: git-cliff
-  #     uses: orhun/git-cliff-action@v4
-  #     with:
-  #       config: cliff.toml
-  #       args: --latest --strip header
+    - name: Generate Release Notes
+      id: git-cliff
+      uses: orhun/git-cliff-action@main
+      with:
+        config: cliff.toml
+        args: --latest --strip header
 
-  #   - name: Create GitHub release
-  #     uses: softprops/action-gh-release@v2
-  #     with:
-  #       name: fp-humanize ${{ env.tag }}
-  #       body: ${{ steps.git-cliff.outputs.content }}
-  #       files: |
-  #         demo-ubuntu-latest/*.tar.gz
-  #         demo-macos-latest/*.tar.gz
-  #         demo-windows-latest/*.zip
-  #     env:
-  #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Create GitHub release
+      uses: softprops/action-gh-release@v2
+      with:
+        name: fp-humanize ${{ env.tag }}
+        body: ${{ steps.git-cliff.outputs.content }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
