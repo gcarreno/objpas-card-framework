@@ -78,15 +78,12 @@ implementation
 
 constructor TBaseDeck.Create;
 begin
-  // The Deck will always own the cards, hence it will free them
+  // Since we are cloning the cards, we can own them
   FCards:= TFPObjectList.Create(True);
 end;
 
 destructor TBaseDeck.Destroy;
-//var index: Integer;
 begin
-  //for index:= 0 to Pred(FCards.Count) do
-  //  FCards[index].Free;
   FCards.Free;
   inherited Destroy;
 end;
@@ -120,6 +117,8 @@ function TBaseDeck.Draw: TBaseCard;
 begin
   if FCards.Count = 0 then
     exit(nil);
+  // Since we own the cards, we need to clone the card because the next
+  // line would cause an AV elsewhere
   Result:= (FCards.Last as TBaseCard).Clone;
   FCards.Delete(Pred(FCards.Count));
 end;

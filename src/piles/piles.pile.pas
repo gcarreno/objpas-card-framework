@@ -68,15 +68,12 @@ implementation
 
 constructor TPile.Create;
 begin
-  // The pile just borrows the card, hence it will not free the objects
+  // Since we are clonning the cards, we can own them
   FCards:= TFPObjectList.Create(True);
 end;
 
 destructor TPile.Destroy;
-//var index: Integer;
 begin
-  //for index:= 0 to Pred(FCards.Count) do
-  //  FCards[index].Free;
   FCards.Free;
   inherited Destroy;
 end;
@@ -110,6 +107,8 @@ function TPile.RemoveTopCard: TBaseCard;
 begin
   if FCards.Count = 0 then
     exit(nil);
+  // Since we own the cards, we need to clone the card because the next
+  // line would cause an AV elsewhere
   Result := (FCards.Last as TBaseCard).Clone;
   FCards.Delete(Pred(FCards.Count));
 end;

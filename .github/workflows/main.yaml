@@ -19,42 +19,44 @@ on:
 
 jobs:
 
-  # build:
-  #   name: Build Demo
-  #   runs-on: ${{ matrix.operating-system }}
+  build:
+    name: Build Examples
+    runs-on: ${{ matrix.operating-system }}
 
-  #   strategy:
-  #     matrix:
-  #       operating-system: [ ubuntu-latest, windows-latest, macos-latest ]
-  #       lazarus-versions: [ stable, 3.4 ]
-  #     fail-fast: true
+    strategy:
+      matrix:
+        operating-system: [ ubuntu-latest, windows-latest, macos-latest ]
+        lazarus-versions: [ stable, 3.4 ]
+      fail-fast: true
 
-  #   steps:
-  #   - name: Checkout Repository
-  #     uses: actions/checkout@v4
-  #     with:
-  #       fetch-depth: 0
-  #       submodules: true
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        submodules: true
 
-  #   - name: Install Lazarus
-  #     uses: gcarreno/setup-lazarus@v3
-  #     with:
-  #       lazarus-version: ${{ matrix.lazarus-versions }}
-  #       with-cache: false
+    - name: Install Lazarus
+      uses: gcarreno/setup-lazarus@v3
+      with:
+        lazarus-version: ${{ matrix.lazarus-versions }}
+        with-cache: false
 
-  #   - name: Build the Demo
-  #     run: |
-  #       lazbuild -B "packages/Lazarus/fp_humanize.lpk"
-  #       lazbuild -B --bm=Release "demo/Demo.lpi"
+    - name: Compile the package
+      run: lazbuild -B "packages/Lazarus/fp_humanize.lpk"
 
-  #   - name: Upload binary
-  #     if: ${{ matrix.lazarus-versions == 'stable' }}
-  #     uses: actions/upload-artifact@v4
-  #     with:
-  #       name: demo-${{ matrix.operating-system }}
-  #       path: |
-  #         bin/Demo
-  #         bin/Demo.exe
+    - name: Build the Examples
+      run: |
+        lazbuild -B --bm=Release "examples/simple-klondike/klondike.lpi"
+
+    - name: Upload binary
+      if: ${{ matrix.lazarus-versions == 'stable' }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: examples-${{ matrix.operating-system }}
+        path: |
+          bin/klondike
+          bin/klondike.exe
 
   test:
     name: Test Cards Framework
@@ -79,10 +81,11 @@ jobs:
         lazarus-version: ${{ matrix.lazarus-versions }}
         with-cache: false
 
+    - name: Compile the package
+      run: lazbuild -B "packages/Lazarus/fp_card_framework.lpk"
+
     - name: Build the test application
-      run: |
-        lazbuild -B "packages/Lazarus/fp_card_framework.lpk"
-        lazbuild -B --bm=Release "tests/testframework_cli.lpi"
+      run: lazbuild -B --bm=Release "tests/testframework_cli.lpi"
 
     - name: Run the tests
       run: bin/testframework_cli --all --format=plain
@@ -92,7 +95,7 @@ jobs:
 
     name: Create GitHub Release
     runs-on: ubuntu-latest
-    needs: [ test ]
+    needs: [ build, test ]
 
     steps:
     - name: Checkout
@@ -104,48 +107,43 @@ jobs:
     - name: Set env
       run: echo "tag=${{ github.ref_name }}" >> "$GITHUB_ENV"
 
-  #   - name: Download Ubuntu
-  #     uses: actions/download-artifact@v4
-  #     with:
-  #       name: demo-ubuntu-latest
-  #       path: demo-ubuntu-latest
+    - name: Download Ubuntu
+      uses: actions/download-artifact@v4
+      with:
+        name: examples-ubuntu-latest
+        path: examples-ubuntu-latest
 
-  #   - name: Download Windows
-  #     uses: actions/download-artifact@v4
-  #     with:
-  #       name: demo-windows-latest
-  #       path: demo-windows-latest
+    - name: Download Windows
+      uses: actions/download-artifact@v4
+      with:
+        name: examples-windows-latest
+        path: examples-windows-latest
 
-  #   - name: Download Darwin
-  #     uses: actions/download-artifact@v4
-  #     with:
-  #       name: demo-macos-latest
-  #       path: demo-macos-latest
+    - name: Download Darwin
+      uses: actions/download-artifact@v4
+      with:
+        name: examples-macos-latest
+        path: examples-macos-latest
 
-  #   - name: List files
-  #     run: ls -alF demo-*-latest
+    - name: List files
+      run: ls -alF examples-*-latest
 
-  #   - name: Create release files
-  #     run: |
-  #       echo Ubuntu
-  #       cd demo-ubuntu-latest
-  #       chmod +x Demo
-  #       cp -r ../locale .
-  #       tar -zcvf demo-${{ env.tag }}-x86_64-linux.tar.gz Demo locale
-  #       cd ..
-  #       echo Windows
-  #       cd demo-windows-latest
-  #       cp -r ../locale .
-  #       zip -r demo-${{ env.tag }}-x86_64-win64.zip Demo.exe locale
-  #       cd ..
-  #       echo Darwin
-  #       cd demo-macos-latest
-  #       cp -r ../demo/Demo.app .
-  #       find . -iname ".gitkeep" -delete
-  #       chmod +x Demo
-  #       cp Demo Demo.app/Contents/MacOS
-  #       cp -r ../locale Demo.app/Contents/MacOS
-  #       tar -zcvf demo-${{ env.tag }}-x86_64-darwin.tar.gz Demo.app
+    - name: Create release files
+      run: |
+        echo Ubuntu
+        pushd examples-ubuntu-latest
+        chmod +x klondike
+        tar -zcvf examples-${{ env.tag }}-x86_64-linux.tar.gz klondike
+        popd
+        echo Windows
+        pushd examples-windows-latest
+        zip -r examples-${{ env.tag }}-x86_64-win64.zip klondike.exe
+        popd
+        echo Darwin
+        pushd examples-macos-latest
+        chmod +x klondike
+        tar -zcvf examples-${{ env.tag }}-x86_64-darwin.tar.gz klondike
+        popd
 
     - name: Generate Release Notes
       id: git-cliff
@@ -157,7 +155,11 @@ jobs:
     - name: Create GitHub release
       uses: softprops/action-gh-release@v2
       with:
-        name: fp-humanize ${{ env.tag }}
+        name: Cards ${{ env.tag }}
         body: ${{ steps.git-cliff.outputs.content }}
+        files: |
+          examples-ubuntu-latest/*.tar.gz
+          examples-macos-latest/*.tar.gz
+          examples-windows-latest/*.zip
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
