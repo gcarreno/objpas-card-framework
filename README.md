@@ -11,9 +11,9 @@ This package is an attempt at creating a playing card framework.
 
 ## Objectives
 
-- Firstly make it work for the suited cards games
-- Maybe Tarot
-- Maybe Uno
+- [x] Firstly make it work for the suited cards games. There's a functioning French Deck, aka The Standard Deck, implemented
+- [ ] Maybe Tarot
+- [ ] Maybe Uno
 
 ## Examples
 
