@@ -28,10 +28,12 @@ type
   protected
     function GetString: String;override;
   public
-    constructor Create(ASuit: TSuit; ARank: TRank);
+    constructor Create(ASuit: TSuit; ARank: TRank; AVisible: Boolean);
     destructor Destroy; override;
 
     procedure LoadImageFromResources(AImageName: String);
+
+    //function Clone: TFrenchCard; override;
 
     property Suit: TSuit
       read FSuit;
@@ -51,10 +53,11 @@ implementation
 
 { TFrenchCard }
 
-constructor TFrenchCard.Create(ASuit: TSuit; ARank: TRank);
+constructor TFrenchCard.Create(ASuit: TSuit; ARank: TRank; AVisible: Boolean);
 begin
   FSuit:= ASuit;
   FRank:= ARank;
+  FVisible:= AVisible;
   FImageLoaded:= False;
   FImageName:= EmptyStr;
   FImageStream:= nil;
@@ -69,7 +72,9 @@ end;
 
 function TFrenchCard.GetString: String;
 begin
-  Result := Format('%s%s', [cRankNames[FRank], cSuitNames[FSuit]]);
+  Result:= '--';
+  if FVisible then
+    exit(Format('%s%s', [cRankNames[FRank], cSuitNames[FSuit]]));
 end;
 
 procedure TFrenchCard.LoadImageFromResources(AImageName: String);
@@ -90,6 +95,13 @@ begin
     resStream.Free;
   end;
 end;
+
+//function TFrenchCard.Clone: TFrenchCard;
+//begin
+//  Result:= TFrenchCard.Create(FSuit, FRank);
+//  if Result.ContainsImage then
+//    Result.LoadImageFromResources(Result.ImageName);
+//end;
 
 end.
 

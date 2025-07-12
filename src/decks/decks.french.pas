@@ -64,7 +64,7 @@ begin
   Clear;
   for s := suSpades to High(TSuit) do
     for r := raAce to High(TRank) do
-      Add(TFrenchCard.Create(s, r));
+      Add(TFrenchCard.Create(s, r, True));
 end;
 
 procedure TFrenchDeck.Shuffle;

@@ -24,8 +24,14 @@ type
   TBaseCard = class(TObject)
   private
   protected
+    FVisible: Boolean;
     function GetString: string; virtual; abstract;
   public
+    //function Clone: TBaseCard; virtual; abstract;
+
+    property Visible: Boolean
+      read FVisible
+      write FVisible;
     property ToString: String
       read GetString;
   published
@@ -36,6 +42,8 @@ type
   private
     function GetCard(AIndex: Integer): TBaseCard;
     function GetCount: Integer;
+    function GetFirstCard: TbaseCard;
+    function GetLastCard: TBaseCard;
   protected
     FCards: TFPObjectList;
   public
@@ -48,6 +56,10 @@ type
 
     property Cards[AIndex: Integer]: TBaseCard
       read GetCard; default;
+    //property BottomCard: TbaseCard
+    //  read GetFirstCard;
+    property TopCard: TBaseCard
+      read GetLastCard;
 
     property Count: Integer
       read GetCount;
@@ -67,11 +79,14 @@ implementation
 constructor TBaseDeck.Create;
 begin
   // The Deck will always own the cards, hence it will free them
-  FCards:= TFPObjectList.Create(True);
+  FCards:= TFPObjectList.Create(False);
 end;
 
 destructor TBaseDeck.Destroy;
+var index: Integer;
 begin
+  for index:= 0 to Pred(FCards.Count) do
+    FCards[index].Free;
   FCards.Free;
   inherited Destroy;
 end;
@@ -86,6 +101,16 @@ begin
   Result:= FCards.Count;
 end;
 
+function TBaseDeck.GetFirstCard: TbaseCard;
+begin
+  Result:= (FCards.First as TBaseCard)
+end;
+
+function TBaseDeck.GetLastCard: TBaseCard;
+begin
+  Result:= (FCards.Last as TBaseCard);
+end;
+
 procedure TBaseDeck.Add(ACard: TBaseCard);
 begin
   FCards.Add(ACard);
@@ -96,6 +121,7 @@ begin
   if FCards.Count = 0 then
     exit(nil);
   Result:= (FCards.Last as TBaseCard);
+  FCards.Delete(Pred(FCards.Count));
 end;
 
 procedure TBaseDeck.Clear;

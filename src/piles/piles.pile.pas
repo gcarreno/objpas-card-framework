@@ -16,7 +16,10 @@ type
   TPile = class(TObject)
   private
     FCards: TFPObjectList;
+    function GetCard(AIndex: Integer): TBaseCard;
     function GetCount: Integer;
+    function GetFirstCard: TbaseCard;
+    function GetLastCard: TBaseCard;
   protected
   public
     constructor Create;
@@ -24,6 +27,13 @@ type
 
     procedure AddCard(ACard: TBaseCard);
     function RemoveTopCard: TBaseCard;
+
+    property Cards[AIndex: Integer]: TBaseCard
+      read GetCard; default;
+    //property BottomCard: TbaseCard
+    //  read GetFirstCard;
+    property TopCard: TBaseCard
+      read GetLastCard;
 
     property Count: Integer
       read GetCount;
@@ -73,6 +83,21 @@ begin
   Result:= FCards.Count;
 end;
 
+function TPile.GetFirstCard: TbaseCard;
+begin
+  Result:= (FCards.First as TBaseCard)
+end;
+
+function TPile.GetLastCard: TBaseCard;
+begin
+  Result:= (FCards.Last as TBaseCard)
+end;
+
+function TPile.GetCard(AIndex: Integer): TBaseCard;
+begin
+  Result:= (FCards[AIndex] as TBaseCard);
+end;
+
 procedure TPile.AddCard(ACard: TBaseCard);
 begin
   FCards.Add(ACard);
@@ -81,9 +106,9 @@ end;
 function TPile.RemoveTopCard: TBaseCard;
 begin
   if FCards.Count = 0 then
-  exit(nil);
+    exit(nil);
   Result := (FCards.Last as TBaseCard);
-  FCards.Delete(FCards.Count - 1);
+  FCards.Delete(Pred(FCards.Count));
 end;
 
 { TMovementStack }
@@ -111,7 +136,8 @@ var
 begin
   len := Length(FStack);
   Result := len > 0;
-  if not Result then Exit;
+  if not Result then
+    exit;
   AMove := FStack[len - 1];
   SetLength(FStack, len - 1);
 end;
