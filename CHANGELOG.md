@@ -31,4 +31,7 @@ Notable changes up to the last release.
 - Initial version with only tests - ([7cdb420](https://github.com/gcarreno/objpas-card-framework/commit/7cdb420868f45b58779aadd693966aeb585f555f))
 - Initial commit - ([a518b67](https://github.com/gcarreno/objpas-card-framework/commit/a518b67373178a4ae1e17af2ad15605dbd2edce0))
 
+## New Contributors ❤️
+
+* [@gcarreno](https://github.com/gcarreno) made their first contribution
 
