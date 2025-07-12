@@ -14,6 +14,7 @@ This package is an attempt at creating a playing card framework.
 - [x] Firstly make it work for the suited cards games. There's a functioning French Deck, aka The Standard Deck, implemented
 - [ ] Maybe Tarot
 - [ ] Maybe Uno
+- [ ] Maybe Hearts
 
 ## Examples
 
@@ -23,4 +24,9 @@ There are examples: [Examples Folder](examples)
 
 You can find the package here: [Packages Folder](packages)
 
-
+## Todo
+- [ ] Add iterators for Deck and Pile.
+- [ ] Add section Algorithms: List some known card rules and scoring.
+- [ ] Add section Resources: List free to use graphical card packs.
+- [ ] Add an example for `GUI` with very simple graphics in order to test the `TMemorySTream` code path.
+  That's still missing from the test suites.
