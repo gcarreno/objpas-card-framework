@@ -3,7 +3,12 @@ program testframework_cli;
 {$mode objfpc}{$H+}
 
 uses
-  Classes, TestCards, TestDecks, TestPiles, consoletestrunner;
+  Classes
+, consoletestrunner
+, TestCards
+, TestDecks
+, TestPiles
+;
 
 type
 

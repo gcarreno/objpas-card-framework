@@ -26,12 +26,15 @@ type
   protected
     function GetString: string; virtual; abstract;
   public
+    property ToString: String
+      read GetString;
   published
   end;
 
 { TBaseDeck }
   TBaseDeck = class(TObject)
   private
+    function GetCard(AIndex: Integer): TBaseCard;
     function GetCount: Integer;
   protected
     FCards: TFPObjectList;
@@ -43,22 +46,27 @@ type
     function Draw: TBaseCard;
     procedure Clear;
 
+    property Cards[AIndex: Integer]: TBaseCard
+      read GetCard; default;
+
     property Count: Integer
       read GetCount;
   published
   end;
 
+const
+  cSuitNames: array[TSuit] of string =
+    ('1','2','♠', '♥', '♦', '♣');
+  cRankNames: array[TRank] of string =
+    ('J', 'A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K');
+
 implementation
 
 { TBaseDeck }
 
-function TBaseDeck.GetCount: Integer;
-begin
-  Result:= FCards.Count;
-end;
-
 constructor TBaseDeck.Create;
 begin
+  // The Deck will always own the cards, hence it will free them
   FCards:= TFPObjectList.Create(True);
 end;
 
@@ -66,6 +74,16 @@ destructor TBaseDeck.Destroy;
 begin
   FCards.Free;
   inherited Destroy;
+end;
+
+function TBaseDeck.GetCard(AIndex: Integer): TBaseCard;
+begin
+  Result:= (FCards[AIndex] as TBaseCard);
+end;
+
+function TBaseDeck.GetCount: Integer;
+begin
+  Result:= FCards.Count;
 end;
 
 procedure TBaseDeck.Add(ACard: TBaseCard);

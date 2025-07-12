@@ -43,8 +43,11 @@ type
     FStack: array of TMovement;
   protected
   public
-    procedure Push(Move: TMovement);
-    function Pop(out Move: TMovement): Boolean;
+    constructor Create;
+    destructor Destroy; override;
+
+    procedure Push(AMove: TMovement);
+    function Pop(out AMove: TMovement): Boolean;
   published
   end;
 
@@ -55,7 +58,8 @@ implementation
 
 constructor TPile.Create;
 begin
-  FCards:= TFPObjectList.Create(True);
+  // The pile just borrows the card, hence it will not free the objects
+  FCards:= TFPObjectList.Create(False);
 end;
 
 destructor TPile.Destroy;
@@ -84,20 +88,31 @@ end;
 
 { TMovementStack }
 
-procedure TMovementStack.Push(Move: TMovement);
+constructor TMovementStack.Create;
 begin
-  SetLength(FStack, Length(FStack) + 1);
-  FStack[High(FStack)] := Move;
+  SetLength(FStack, 0);
 end;
 
-function TMovementStack.Pop(out Move: TMovement): Boolean;
+destructor TMovementStack.Destroy;
+begin
+  SetLength(FStack, 0);
+  inherited Destroy;
+end;
+
+procedure TMovementStack.Push(AMove: TMovement);
+begin
+  SetLength(FStack, Length(FStack) + 1);
+  FStack[High(FStack)] := AMove;
+end;
+
+function TMovementStack.Pop(out AMove: TMovement): Boolean;
 var
   len: Integer;
 begin
   len := Length(FStack);
   Result := len > 0;
   if not Result then Exit;
-  Move := FStack[len - 1];
+  AMove := FStack[len - 1];
   SetLength(FStack, len - 1);
 end;
 

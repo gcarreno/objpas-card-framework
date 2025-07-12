@@ -22,9 +22,8 @@ type
     FImageLoaded: Boolean;
     FImageName: String;
     FImageStream: TMemoryStream;
-
-    function GetString: String;override;
   protected
+    function GetString: String;override;
   public
     constructor Create(ASuit: TSuit; ARank: TRank);
     destructor Destroy; override;
@@ -42,9 +41,6 @@ type
       read FImageStream;
     property ContainsImage: Boolean
       read FImageLoaded;
-
-    property ToString: String
-      read GetString;
   published
   end;
 
@@ -69,31 +65,26 @@ begin
 end;
 
 function TFrenchCard.GetString: String;
-const
-  SuitNames: array[TSuit] of string =
-    ('1','2','♠', '♥', '♦', '♣');
-  RankNames: array[TRank] of string =
-    ('J', 'A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K');
 begin
-  Result := Format('%s%s', [RankNames[FRank], SuitNames[FSuit]]);
+  Result := Format('%s%s', [cRankNames[FRank], cSuitNames[FSuit]]);
 end;
 
 procedure TFrenchCard.LoadImageFromResources(AImageName: String);
 var
-  stream: TResourceStream;
+  resStream: TResourceStream;
 begin
-  if FImageStream <> nil then
-    exit; // already loaded
+  if FImageLoaded then // already loaded
+    exit;
 
   try
-    stream := TResourceStream.Create(HInstance, AImageName, RT_RCDATA);
+    resStream := TResourceStream.Create(HInstance, AImageName, RT_RCDATA);
     FImageStream := TMemoryStream.Create;
-    FImageStream.CopyFrom(stream, stream.Size);
+    FImageStream.CopyFrom(resStream, resStream.Size);
     FImageStream.Position := 0;
   finally
     FImageName:= AImageName;
     FImageLoaded:= True;
-    stream.Free;
+    resStream.Free;
   end;
 end;
 

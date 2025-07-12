@@ -50,9 +50,6 @@
           <Other>
             <CustomOptions Value="-FcUTF8
 -dDEBUG"/>
-            <OtherDefines Count="1">
-              <Define0 Value="DEBUG"/>
-            </OtherDefines>
           </Other>
         </CompilerOptions>
       </Item>
@@ -95,6 +92,9 @@
       <FormatVersion Value="2"/>
     </RunParams>
     <RequiredPackages>
+      <Item>
+        <PackageName Value="fp_card_framework"/>
+      </Item>
       <Item>
         <PackageName Value="FCL"/>
       </Item>

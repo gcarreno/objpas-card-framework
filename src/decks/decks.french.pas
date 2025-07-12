@@ -17,7 +17,7 @@ type
   private
   protected
   public
-    procedure PopulateFrenchDeck;
+    procedure Populate;
     procedure Shuffle;
   published
   end;
@@ -26,7 +26,7 @@ implementation
 
 { TFrenchDeck }
 
-procedure TFrenchDeck.PopulateFrenchDeck;
+procedure TFrenchDeck.Populate;
 var
   s: TSuit;
   r: TRank;
