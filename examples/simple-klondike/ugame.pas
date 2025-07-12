@@ -19,6 +19,7 @@ type
 { TKlondikeGame }
   TKlondikeGame = class(TObject)
   private
+    FExit: Boolean;
     FDeck: TFrenchDeck;
     FStock, FWaste: TPile;
     FFoundations: array[0..3] of TPile;
@@ -26,7 +27,7 @@ type
     FStartTime: TDateTime;
     FScore: Integer;
     procedure InitGame;
-    procedure DealCards;
+    //procedure DealCards;
     procedure PrintGame;
     procedure ExecuteCommand(const S: string);
     procedure Help;
@@ -51,6 +52,7 @@ constructor TKlondikeGame.Create;
 var
   index: Integer;
 begin
+  FExit:= False;
   FDeck:= TFrenchDeck.Create;
   FDeck.Populate;
   FDeck.Shuffle;
@@ -69,6 +71,7 @@ destructor TKlondikeGame.Destroy;
 var
   index: Integer;
 begin
+  WriteLn('Game destroying...');
   FWaste.Free;
   FStock.Free;
   FDeck.Free;
@@ -99,10 +102,10 @@ begin
   end;
 end;
 
-procedure TKlondikeGame.DealCards;
-begin
-
-end;
+//procedure TKlondikeGame.DealCards;
+//begin
+//
+//end;
 
 procedure TKlondikeGame.PrintGame;
 var
@@ -147,7 +150,7 @@ begin
   if Length(Parts) = 0 then Exit;
 
   case LowerCase(Parts[0]) of
-    'draw':
+    'd', 'draw':
       begin
         if FStock.Count > 0 then
         begin
@@ -156,7 +159,7 @@ begin
         end;
         PrintGame;
       end;
-    'move':
+    'm', 'move':
       begin
         if Length(Parts) <> 3 then
           WriteLn('Usage: move <source> <destination>')
@@ -164,12 +167,12 @@ begin
           WriteLn('Invalid move.');
         PrintGame;
       end;
-    'help':
+    'h', 'help':
       begin
         PrintGame;
         Help;
       end;
-    'quit': Halt;
+    'q', 'quit': FExit:= True;
     else
     begin
       PrintGame;
@@ -183,10 +186,10 @@ procedure TKlondikeGame.Help;
 begin
   WriteLn;
   WriteLn('Available commands:');
-  WriteLn(' draw             - Draw a card from stock to waste');
-  WriteLn(' move <src> <dst> - Move card from src to dst (e.g., W F1 or T3 F2)');
-  WriteLn(' help             - Show this help');
-  WriteLn(' quit             - Quit the game');
+  WriteLn(' [d]raw             - Draw a card from stock to waste');
+  WriteLn(' [m]ove <src> <dst> - Move card from src to dst (e.g., W F1 or T3 F2)');
+  WriteLn(' [h]elp             - Show this help');
+  WriteLn(' [q]uit             - Quit the game');
 end;
 
 function TKlondikeGame.MoveCard(const Src, Dest: string): Boolean;
@@ -314,7 +317,7 @@ begin
     Write('Command > ');
     ReadLn(Cmd);
     ExecuteCommand(Cmd);
-  until False;
+  until FExit;
 end;
 
 end.

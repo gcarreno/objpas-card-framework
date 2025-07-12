@@ -8,6 +8,9 @@ uses
   Classes
 , SysUtils
 , Base.Common
+{$IFDEF WINDOWS}
+, Windows
+{$ENDIF}
 , Cards.French
 ;
 
