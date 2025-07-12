@@ -1,4 +1,5 @@
 # Card Framework in Object Pascal
+[![Build Status](https://github.com/gcarreno/objpas-card-framework/actions/workflows/main.yaml/badge.svg?branch=main)](https://github.com/gcarreno/objpas-card-framework/actions)
 [![Supports Windows](https://img.shields.io/badge/support-Windows-blue?logo=Windows)](https://github.com/gcarreno/objpas-card-framework/releases/latest)
 [![Supports Linux](https://img.shields.io/badge/support-Linux-yellow?logo=Linux)](https://github.com/gcarreno/objpas-card-framework/releases/latest)
 [![Supports macOS](https://img.shields.io/badge/support-macOS-black?logo=macOS)](https://github.com/gcarreno/objpas-card-framework/releases/latest)
@@ -22,4 +23,4 @@ There are examples: [Examples Folder](examples)
 
 You can find the package here: [Packages Folder](packages)
 
-<!-- [![Build Status](https://github.com/gcarreno/objpas-card-framework/actions/workflows/main.yaml/badge.svg?branch=main)](https://github.com/gcarreno/objpas-card-framework/actions) -->
+
