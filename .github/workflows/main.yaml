@@ -1,0 +1,167 @@
+name: Cards
+
+defaults:
+  run:
+    shell: bash
+
+permissions:
+  contents: write
+
+on:
+
+  push:
+    branches: [ main ]
+    tags: [ "*" ]
+    paths-ignore: [ "README.md", "LICENSE", "CHANGELOG.md", "cliff.toml" ]
+
+  pull_request:
+    branches: [ main ]
+
+jobs:
+
+  # build:
+  #   name: Build Demo
+  #   runs-on: ${{ matrix.operating-system }}
+
+  #   strategy:
+  #     matrix:
+  #       operating-system: [ ubuntu-latest, windows-latest, macos-latest ]
+  #       lazarus-versions: [ stable, 3.4 ]
+  #     fail-fast: true
+
+  #   steps:
+  #   - name: Checkout Repository
+  #     uses: actions/checkout@v4
+  #     with:
+  #       fetch-depth: 0
+  #       submodules: true
+
+  #   - name: Install Lazarus
+  #     uses: gcarreno/setup-lazarus@v3
+  #     with:
+  #       lazarus-version: ${{ matrix.lazarus-versions }}
+  #       with-cache: false
+
+  #   - name: Build the Demo
+  #     run: |
+  #       lazbuild -B "packages/Lazarus/fp_humanize.lpk"
+  #       lazbuild -B --bm=Release "demo/Demo.lpi"
+
+  #   - name: Upload binary
+  #     if: ${{ matrix.lazarus-versions == 'stable' }}
+  #     uses: actions/upload-artifact@v4
+  #     with:
+  #       name: demo-${{ matrix.operating-system }}
+  #       path: |
+  #         bin/Demo
+  #         bin/Demo.exe
+
+  test:
+    name: Test Cards Framework
+    runs-on: ${{ matrix.operating-system }}
+
+    strategy:
+      matrix:
+        operating-system: [ ubuntu-latest, windows-latest, macos-latest ]
+        lazarus-versions: [ stable, 3.4 ]
+      fail-fast: true
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        submodules: true
+
+    - name: Install Lazarus
+      uses: gcarreno/setup-lazarus@v3
+      with:
+        lazarus-version: ${{ matrix.lazarus-versions }}
+        with-cache: false
+
+    - name: Build the test application
+      run: |
+        lazbuild -B "packages/Lazarus/fp_card_framework.lpk"
+        lazbuild -B --bm=Release "tests/testframework_cli.lpi"
+
+    - name: Run the tests
+      run: bin/testframework_cli --all --format=plain
+
+  # release:
+  #   if: contains(github.ref_type, 'tag')
+
+  #   name: Create GitHub Release
+  #   runs-on: ubuntu-latest
+  #   needs: [ build, test ]
+
+  #   steps:
+  #   - name: Checkout
+  #     uses: actions/checkout@v4
+  #     with:
+  #       fetch-depth: 0
+  #       submodules: true
+
+  #   - name: Set env
+  #     run: echo "tag=${{ github.ref_name }}" >> "$GITHUB_ENV"
+
+  #   - name: Download Ubuntu
+  #     uses: actions/download-artifact@v4
+  #     with:
+  #       name: demo-ubuntu-latest
+  #       path: demo-ubuntu-latest
+
+  #   - name: Download Windows
+  #     uses: actions/download-artifact@v4
+  #     with:
+  #       name: demo-windows-latest
+  #       path: demo-windows-latest
+
+  #   - name: Download Darwin
+  #     uses: actions/download-artifact@v4
+  #     with:
+  #       name: demo-macos-latest
+  #       path: demo-macos-latest
+
+  #   - name: List files
+  #     run: ls -alF demo-*-latest
+
+  #   - name: Create release files
+  #     run: |
+  #       echo Ubuntu
+  #       cd demo-ubuntu-latest
+  #       chmod +x Demo
+  #       cp -r ../locale .
+  #       tar -zcvf demo-${{ env.tag }}-x86_64-linux.tar.gz Demo locale
+  #       cd ..
+  #       echo Windows
+  #       cd demo-windows-latest
+  #       cp -r ../locale .
+  #       zip -r demo-${{ env.tag }}-x86_64-win64.zip Demo.exe locale
+  #       cd ..
+  #       echo Darwin
+  #       cd demo-macos-latest
+  #       cp -r ../demo/Demo.app .
+  #       find . -iname ".gitkeep" -delete
+  #       chmod +x Demo
+  #       cp Demo Demo.app/Contents/MacOS
+  #       cp -r ../locale Demo.app/Contents/MacOS
+  #       tar -zcvf demo-${{ env.tag }}-x86_64-darwin.tar.gz Demo.app
+
+  #   - name: Generate Release Notes
+  #     id: git-cliff
+  #     uses: orhun/git-cliff-action@v4
+  #     with:
+  #       config: cliff.toml
+  #       args: --latest --strip header
+
+  #   - name: Create GitHub release
+  #     uses: softprops/action-gh-release@v2
+  #     with:
+  #       name: fp-humanize ${{ env.tag }}
+  #       body: ${{ steps.git-cliff.outputs.content }}
+  #       files: |
+  #         demo-ubuntu-latest/*.tar.gz
+  #         demo-macos-latest/*.tar.gz
+  #         demo-windows-latest/*.zip
+  #     env:
+  #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
