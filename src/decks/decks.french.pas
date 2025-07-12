@@ -15,16 +15,45 @@ type
 { TFrenchDeck }
   TFrenchDeck = class(TBaseDeck)
   private
+    FBackImageLoaded: Boolean;
+    FBackImageName: String;
+    FBackImageStream: TMemoryStream;
   protected
   public
+    constructor Create;
+    destructor Destroy; override;
+
     procedure Populate;
     procedure Shuffle;
+
+    procedure LoadImageFromResources(AImageName: String);
+
+    property BackImageName: String
+      read FBackImageName;
+    property BackImageData: TMemoryStream
+      read FBAckImageStream;
+    property ContainsBackImage: Boolean
+      read FBAckImageLoaded;
   published
   end;
 
 implementation
 
 { TFrenchDeck }
+
+constructor TFrenchDeck.Create;
+begin
+  FBackImageLoaded:= False;
+  FBackImageName:= EmptyStr;
+  FBackImageStream:= nil;
+end;
+
+destructor TFrenchDeck.Destroy;
+begin
+  if FBackImageLoaded then
+    FBackImageStream.Free;
+  inherited Destroy;
+end;
 
 procedure TFrenchDeck.Populate;
 var
@@ -46,6 +75,25 @@ begin
   begin
     position := Random(index + 1);
     FCards.Exchange(index, position);
+  end;
+end;
+
+procedure TFrenchDeck.LoadImageFromResources(AImageName: String);
+var
+  resStream: TResourceStream;
+begin
+  if FBackImageLoaded then // already loaded
+    exit;
+
+  try
+    resStream := TResourceStream.Create(HInstance, AImageName, RT_RCDATA);
+    FBackImageStream := TMemoryStream.Create;
+    FBackImageStream.CopyFrom(resStream, resStream.Size);
+    FBackImageStream.Position := 0;
+  finally
+    FBackImageName:= AImageName;
+    FBackImageLoaded:= True;
+    resStream.Free;
   end;
 end;
 
