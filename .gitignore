@@ -1,5 +1,6 @@
 # Project specific
 /bin
+/research
 
 # Compiled l10n files: .mo should be ignored
 *.mo
