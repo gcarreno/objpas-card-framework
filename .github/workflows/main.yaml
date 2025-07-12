@@ -43,7 +43,7 @@ jobs:
         with-cache: false
 
     - name: Compile the package
-      run: lazbuild -B "packages/Lazarus/fp_humanize.lpk"
+      run: lazbuild -B "packages/Lazarus/fp_card_framework.lpk"
 
     - name: Build the Examples
       run: |
