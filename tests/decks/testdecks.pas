@@ -34,6 +34,9 @@ procedure TFrameworkDecks.TestFrenchDeckCreate;
 begin
   FFrenchDeck:= TFrenchDeck.Create;
   try
+    AssertEquals('Image Name', EmptyStr, FFrenchDeck.BackImageName);
+    AssertNull('Image Data', FFrenchDeck.BackImageData);
+    AssertFalse('Contains Image', FFrenchDeck.ContainsBackImage);
     AssertEquals('Deck count', 0, FFrenchDeck.Count);
   finally
     FFrenchDeck.Free;

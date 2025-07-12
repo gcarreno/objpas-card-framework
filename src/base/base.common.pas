@@ -39,7 +39,7 @@ type
   protected
     FCards: TFPObjectList;
   public
-    constructor Create;
+    constructor Create; virtual;
     destructor Destroy; override;
 
     procedure Add(ACard: TBaseCard);

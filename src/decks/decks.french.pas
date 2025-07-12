@@ -20,7 +20,7 @@ type
     FBackImageStream: TMemoryStream;
   protected
   public
-    constructor Create;
+    constructor Create; override;
     destructor Destroy; override;
 
     procedure Populate;
@@ -43,6 +43,7 @@ implementation
 
 constructor TFrenchDeck.Create;
 begin
+  inherited Create;
   FBackImageLoaded:= False;
   FBackImageName:= EmptyStr;
   FBackImageStream:= nil;
