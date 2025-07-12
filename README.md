@@ -28,5 +28,5 @@ You can find the package here: [Packages Folder](packages)
 - [ ] Add iterators for Deck and Pile.
 - [ ] Add section Algorithms: List some known card rules and scoring.
 - [ ] Add section Resources: List free to use graphical card packs.
-- [ ] Add an example for `GUI` with very simple graphics in order to test the `TMemorySTream` code path.
+- [ ] Add an example for `GUI` with very simple graphics in order to test the `TMemorySTream` code path.\
   That's still missing from the test suites.
