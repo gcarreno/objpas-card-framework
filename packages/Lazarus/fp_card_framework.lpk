@@ -13,7 +13,8 @@
         <CustomOptions Value="-FcUTF8"/>
       </Other>
     </CompilerOptions>
-    <Description Value="A set of classes to implement any card game"/>
+    <Description Value="A set of classes to implement any card game.
+Supports image loading via TMemorySream field in `TBaseCard` descendents"/>
     <License Value="MIT License
 
 Copyright © 2025 Gustavo &apos;Gus&apos; Carreno &lt;guscarreno@gmail.com>
@@ -36,7 +37,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 "/>
-    <Version Build="1"/>
+    <Version Build="2"/>
     <Files>
       <Item>
         <Filename Value="../../src/base/base.common.pas"/>
@@ -52,7 +53,7 @@ SOFTWARE.
       </Item>
       <Item>
         <Filename Value="../../src/piles/piles.pile.pas"/>
-        <UnitName Value="piles.pile"/>
+        <UnitName Value="Piles.Pile"/>
       </Item>
     </Files>
     <RequiredPkgs>

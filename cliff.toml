@@ -77,14 +77,14 @@ body = """
 footer = """
 > [!NOTE]
 >
-> For a list of all the changes up to date, please read [CHANGELOG.md](https://github.com/gcarreno/fp-card-framework/blob/main/CHANGELOG.md).
+> For a list of all the changes up to date, please read [CHANGELOG.md](<REPO>/blob/main/CHANGELOG.md).
 """
 # Remove leading and trailing whitespaces from the changelog's body.
 trim = true
 # An array of regex based postprocessors to modify the changelog.
 postprocessors = [
   # Replace the placeholder `<REPO>` with a URL.
-  { pattern = '<REPO>', replace = "https://github.com/gcarreno/fp-card-framework" }, # replace repository URL
+  { pattern = '<REPO>', replace = "https://github.com/gcarreno/objpas-card-framework" }, # replace repository URL
 ]
 
 [git]
