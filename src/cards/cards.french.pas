@@ -33,7 +33,7 @@ type
 
     procedure LoadImageFromResources(AImageName: String);
 
-    //function Clone: TFrenchCard; override;
+    function Clone: TFrenchCard; override;
 
     property Suit: TSuit
       read FSuit;
@@ -96,12 +96,12 @@ begin
   end;
 end;
 
-//function TFrenchCard.Clone: TFrenchCard;
-//begin
-//  Result:= TFrenchCard.Create(FSuit, FRank);
-//  if Result.ContainsImage then
-//    Result.LoadImageFromResources(Result.ImageName);
-//end;
+function TFrenchCard.Clone: TFrenchCard;
+begin
+  Result:= TFrenchCard.Create(FSuit, FRank, FVisible);
+  if Result.ContainsImage then
+    Result.LoadImageFromResources(Result.ImageName);
+end;
 
 end.
 

@@ -69,11 +69,14 @@ implementation
 constructor TPile.Create;
 begin
   // The pile just borrows the card, hence it will not free the objects
-  FCards:= TFPObjectList.Create(False);
+  FCards:= TFPObjectList.Create(True);
 end;
 
 destructor TPile.Destroy;
+//var index: Integer;
 begin
+  //for index:= 0 to Pred(FCards.Count) do
+  //  FCards[index].Free;
   FCards.Free;
   inherited Destroy;
 end;
@@ -107,7 +110,7 @@ function TPile.RemoveTopCard: TBaseCard;
 begin
   if FCards.Count = 0 then
     exit(nil);
-  Result := (FCards.Last as TBaseCard);
+  Result := (FCards.Last as TBaseCard).Clone;
   FCards.Delete(Pred(FCards.Count));
 end;
 

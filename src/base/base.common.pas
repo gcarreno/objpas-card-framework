@@ -27,7 +27,7 @@ type
     FVisible: Boolean;
     function GetString: string; virtual; abstract;
   public
-    //function Clone: TBaseCard; virtual; abstract;
+    function Clone: TBaseCard; virtual; abstract;
 
     property Visible: Boolean
       read FVisible
@@ -79,14 +79,14 @@ implementation
 constructor TBaseDeck.Create;
 begin
   // The Deck will always own the cards, hence it will free them
-  FCards:= TFPObjectList.Create(False);
+  FCards:= TFPObjectList.Create(True);
 end;
 
 destructor TBaseDeck.Destroy;
-var index: Integer;
+//var index: Integer;
 begin
-  for index:= 0 to Pred(FCards.Count) do
-    FCards[index].Free;
+  //for index:= 0 to Pred(FCards.Count) do
+  //  FCards[index].Free;
   FCards.Free;
   inherited Destroy;
 end;
@@ -120,7 +120,7 @@ function TBaseDeck.Draw: TBaseCard;
 begin
   if FCards.Count = 0 then
     exit(nil);
-  Result:= (FCards.Last as TBaseCard);
+  Result:= (FCards.Last as TBaseCard).Clone;
   FCards.Delete(Pred(FCards.Count));
 end;
 
