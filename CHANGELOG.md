@@ -16,14 +16,20 @@ Notable changes up to the last release.
 - Unit `windows` for `RT_RCDATA` on Windows - ([a6130a5](https://github.com/gcarreno/objpas-card-framework/commit/a6130a5d23903a255c234e681972136fe2708de6))
 - French Deck missing `inherit Create` - ([21ab430](https://github.com/gcarreno/objpas-card-framework/commit/21ab4302a850669250a3ea7f9092d226c58942b1))
 
+### 🧪 Testing
+
+- Fixed assert visibility and AV - ([564d3ab](https://github.com/gcarreno/objpas-card-framework/commit/564d3abbbc7446bacd607b76b2193ab97288dcbe))
+- Fixed missing argument on card create - ([7326fcd](https://github.com/gcarreno/objpas-card-framework/commit/7326fcdb4fb4ee02ce1ac9cdb73f4578218ad6e2))
+
 ### ⚙️ Miscellaneous Tasks
 
+- Fixed path to package on build examples - ([1dc9af0](https://github.com/gcarreno/objpas-card-framework/commit/1dc9af039e8bab2c3f5f48cee29c8b408bed5172))
 - Adding examples build and attach to release - ([ebcd79e](https://github.com/gcarreno/objpas-card-framework/commit/ebcd79eedabe30ccfcf98a7b0c591ea7bf630bf2))
 - Better version of `cliff.toml` - ([e2f491f](https://github.com/gcarreno/objpas-card-framework/commit/e2f491f8ec5cf762be3e11fa951f8f8a02d3f49f))
 
-## Contributors
+## New Contributors ❤️
 
-* [@gcarreno](https://github.com/gcarreno)
+* [@gcarreno](https://github.com/gcarreno) made their first contribution
 
 ## [0.0.1] - 2025-07-12
 
