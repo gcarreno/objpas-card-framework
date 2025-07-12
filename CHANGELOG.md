@@ -2,6 +2,16 @@
 
 Notable changes up to the last release.
 
+## [unreleased]
+
+### ⚙️ Miscellaneous Tasks
+
+- Better version of `cliff.toml` - ([e2f491f](https://github.com/gcarreno/objpas-card-framework/commit/e2f491f8ec5cf762be3e11fa951f8f8a02d3f49f))
+
+## Contributors
+
+* [@gcarreno](https://github.com/gcarreno)
+
 ## [0.0.1] - 2025-07-12
 
 ### ⛰️  Features
