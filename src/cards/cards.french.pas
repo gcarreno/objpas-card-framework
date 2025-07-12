@@ -10,6 +10,9 @@ interface
 uses
   Classes
 , SysUtils
+{$IFDEF WINDOWS}
+, Windows
+{$ENDIF}
 , Base.Common
 ;
 
