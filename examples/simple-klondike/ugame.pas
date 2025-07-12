@@ -71,7 +71,6 @@ destructor TKlondikeGame.Destroy;
 var
   index: Integer;
 begin
-  WriteLn('Game destroying...');
   FWaste.Free;
   FStock.Free;
   FDeck.Free;
@@ -216,7 +215,8 @@ begin
   begin
     if (Card.Rank = raAce) and (ToPile.Count = 0) then
     begin
-      FromPile.TopCard.Visible:= True;
+      if Assigned(FromPile.TopCard) then
+        FromPile.TopCard.Visible:= True;
       ToPile.AddCard(Card);
       Inc(FScore, 10);
       Exit(True);
@@ -226,7 +226,8 @@ begin
       TopDest := (ToPile.RemoveTopCard as TFrenchCard);
       if (Card.Suit = TopDest.Suit) and (Ord(Card.Rank) = Ord(TopDest.Rank) + 1) then
       begin
-        FromPile.TopCard.Visible:= True;
+        if Assigned(FromPile.TopCard) then
+          FromPile.TopCard.Visible:= True;
         ToPile.AddCard(TopDest);
         ToPile.AddCard(Card);
         Inc(FScore, 10);
@@ -243,7 +244,8 @@ begin
     begin
       if Card.Rank = raKing then
       begin
-        FromPile.TopCard.Visible:= True;
+        if Assigned(FromPile.TopCard) then
+          FromPile.TopCard.Visible:= True;
         ToPile.AddCard(Card);
         Inc(FScore, 5);
         Exit(True);
@@ -252,9 +254,14 @@ begin
     else
     begin
       TopDest := (ToPile.RemoveTopCard as TFrenchCard);
+      if not Assigned(TopDest) then
+      begin
+        raise Exception.Create('Tableau: TopDest is nil');
+      end;
       if Ord(Card.Rank) = Ord(TopDest.Rank) - 1 then
       begin
-        FromPile.TopCard.Visible:= True;
+        if Assigned(FromPile.TopCard) then
+          FromPile.TopCard.Visible:= True;
         ToPile.AddCard(TopDest);
         ToPile.AddCard(Card);
         Inc(FScore, 5);
