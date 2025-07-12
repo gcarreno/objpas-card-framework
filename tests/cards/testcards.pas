@@ -31,10 +31,11 @@ procedure TFrameworkCards.TestFrenchCardCreate;
 var
   want: String;
 begin
-  FFrenchCard:= TFrenchCard.Create(suSpades, raAce);
+  FFrenchCard:= TFrenchCard.Create(suSpades, raAce, False);
   want:= Format('%s%s', [cRankNames[raAce], cSuitNames[suSpades]]);
   try
     AssertEquals('The Ace of Spades', want, FFrenchCard.ToString);
+    AssertFalse('Visibility', FFrenchCard.Visible);
     AssertEquals('Image Name', EmptyStr, FFrenchCard.ImageName);
     AssertNull('Image Data', FFrenchCard.ImageData);
     AssertFalse('Contains Image', FFrenchCard.ContainsImage);

@@ -48,9 +48,8 @@ var
   want: String;
 begin
   FPile := TPile.Create;
-  card := TFrenchCard.Create(suHearts, raQueen);
+  card := TFrenchCard.Create(suHearts, raQueen, False);
   want:= Format('%s%s', [cRankNames[raQueen], cSuitNames[suHearts]]);
-
   try
     FPile.AddCard(card);
     AssertEquals('Pile count', 1, FPile.Count);
@@ -74,7 +73,7 @@ begin
   fromPile := TPile.Create;
   toPile := TPile.Create;
   try
-    move.Card := TFrenchCard.Create(suClubs, raKing);
+    move.Card := TFrenchCard.Create(suClubs, raKing, False);
     move.FromPile := fromPile;
     move.ToPile := toPile;
     stack.Push(move);
