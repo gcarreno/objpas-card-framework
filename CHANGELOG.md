@@ -27,7 +27,7 @@ Notable changes up to the last release.
 - Adding examples build and attach to release - ([ebcd79e](https://github.com/gcarreno/objpas-card-framework/commit/ebcd79eedabe30ccfcf98a7b0c591ea7bf630bf2))
 - Better version of `cliff.toml` - ([e2f491f](https://github.com/gcarreno/objpas-card-framework/commit/e2f491f8ec5cf762be3e11fa951f8f8a02d3f49f))
 
-## New Contributors ❤️
+## Contributors
 
 * [@gcarreno](https://github.com/gcarreno) made their first contribution
 
