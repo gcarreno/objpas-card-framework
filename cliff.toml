@@ -1,6 +1,6 @@
 [remote.github]
 owner = "gcarreno"
-repo = "fp-card-framework"
+repo = "objpas-card-framework"
 
 [changelog]
 # A Tera template to be rendered as the changelog's header.
